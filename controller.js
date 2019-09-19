@@ -11,12 +11,17 @@ const addOrganiser = (req, res)=>{
 }  
 
 const addEvent = (req, res)=>{
-    const newEvent = Event(req.body);
-    newEvent.save((err, event)=>{
+    Organiser.findOne({id: req.body.organiserID},(err, organiser)=>{
         if(err){
-            return res.send('error occured')
+            return res.send('organiser not found');
         }
-        res.status(200).send('event added')
+        const newEvent = Event(req.body);
+        newEvent.save((err, event)=>{
+            if(err){
+                return res.send('error occured')
+            }
+            res.status(200).send('event added')
+        })
     })
 }  
 
